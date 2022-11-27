@@ -126,8 +126,8 @@ Please note the `date` column is of the floating_timestamp datatype. You can vie
 
 ```r
 base_limit_2021 <- paste0(base_URL, "$limit=500000","&$where=date between '2020-12-31T23:59:00.000' and '2021-12-31T23:59:00.000'", "&$select=date, primary_type, x_coordinate, y_coordinate")
-base_limit_2021_encode <- URLencode(base_limit_2022)
-crime_2021 <- fromJSON(base_limit_2022_encode)
+base_limit_2021_encode <- URLencode(base_limit_2021)
+crime_2021 <- fromJSON(base_limit_2021_encode)
 ```
 
 
@@ -141,8 +141,8 @@ base_limit_count <- paste0(base_URL, "$limit=300000","&$where=date between '2020
 fromJSON(URLencode(base_limit_count))
 
 base_limit_2021 <- paste0(base_URL, "$limit=210000","&$where=date between '2020-12-31T23:59:00.000' and '2021-12-31T23:59:00.000'", "&$select=date, primary_type, x_coordinate, y_coordinate")
-base_limit_2021_encode <- URLencode(base_limit_2022)
-crime_2021 <- fromJSON(base_limit_2022_encode)
+base_limit_2021_encode <- URLencode(base_limit_2021)
+crime_2021 <- fromJSON(base_limit_2021_encode)
 ```
 
 
