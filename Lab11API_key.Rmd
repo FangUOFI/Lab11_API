@@ -11,9 +11,9 @@ library(knitr)
 opts_chunk$set(tidy.opts=list(width.cutoff=80),tidy=TRUE)
 ```
 
-## Bonus opportunity (10 points)
+## Bonus opportunity (20 points)
 
-Can you use the API endpoint to get a subset of crimes data from the Chicago data portal, which only includes the data since 2021-01-01 to 2021-07-01 and the primary type is THEFT? Please only select these columns to be returned: date, primary_ type, x-coordinate and y-coordinate. Name the returned subset data as theft_2021.  Hint: you can use `&` inside the `paste0()` function to add additional filtering parameters. 
+Can you use the API endpoint to get a subset of crimes data from the Chicago data portal, which only includes the data since 2021-01-01 to 2021-07-01 and the primary type is THEFT? Please only select these columns to be returned: date, primary_ type,arrest, latitude,and  longitude. Name the returned subset data as theft_2021.  Hint: you can use `&` inside the `paste0()` function to add additional filtering parameters. 
 
 **Q1**: How many crimes occurred between 2021-01-01 to 2021-07-01 are theft? (5 points)
 
@@ -26,20 +26,19 @@ Answer:  17091
 Answer: 
 
 ![](images/Q2.jpg)
+**Q3**: Among all the theft records between 2021-01-01 to 2021-07-01, What percentage of crimes are solved (an arrest was made) by police? (10 points)
 
 
-```{r warning=F, message=F}
+```{r message=F, warning=F}
 library(tidyverse)
 library(rjson)
 library(jsonlite)
 library(RCurl)
 # The base URL below is the API endpoint you copied from the page above. 
-
 base_URL="https://data.cityofchicago.org/resource/crimes.json?"
-
 base_theft_count <- paste0(base_URL, "$limit=900000",
-"&$where=date between '2021-01-01T00:00:00.000' 
-    and '2021-06-30T23:59:59.000'",
+    "&$where=date between '2021-01-01T00:00:00.000' and
+    '2021-06-30T23:59:59.000'",
     "&primary_type='THEFT'", "&$select=count(date)")
 
 fromJSON(URLencode(base_theft_count))
@@ -47,12 +46,15 @@ fromJSON(URLencode(base_theft_count))
 
 
 base_theft_2021 <- paste0(base_URL, "$limit=20000",
-"&$where=date between '2021-01-01T00:00:00.000' and
+    "&$where=date between '2021-01-01T00:00:00.000' and 
     '2021-06-30T23:59:59.000'",
     "&primary_type='THEFT'", "&$select=date, 
-    primary_type, x_coordinate, y_coordinate")
+    primary_type,arrest, latitude, longitude")
 theft_2021 <- fromJSON(URLencode(base_theft_2021))
-head(theft_2021)
+
+
+arrest <- theft_2021 %>% filter(arrest==TRUE)
 
 ```
 
+Answer: 4.3 percent of crimes are solved (an arrest was made) by police

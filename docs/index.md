@@ -117,7 +117,7 @@ Most of the cases we just need a certain subset of the dataset. For example, how
 How to request a certain subset of your data? We can customize the URL here. Note that you are using a new function - `paste0` - to paste together a complex URL string. Please check out the code chunk below: We first set the API endpoint as the base URL, and then append more strings to the end of the base URL to perform a certain query and data filtering. Next we can encode the URL and then download the data in R. 
 
 
-For example, for the data filtering step, in order to return the dataset from 2021 only, we need to use the 'date' field to set the subset the records. The '`where`' parameter will filter the data by **rows**, and '`select`' parameter will return certain **columns** you are interested in only. The code below allows you to download data for 2021 only, with just 4 columns returned: data, primary type, and x, y coordinates. 
+For example, for the data filtering step, in order to return the dataset from 2021 only, we need to use the 'date' field to set the subset the records. The '`where`' parameter will filter the data by **rows**, and '`select`' parameter will return certain **columns** you are interested in only. The code below allows you to download data for 2021 only, with just 4 columns returned: data, primary type,  latitude and longitude. 
 
 Please note the `date` column is of the floating_timestamp datatype. You can view more examples about the format filtering out each different columns from the API documentation page. 
 
@@ -125,7 +125,7 @@ Please note the `date` column is of the floating_timestamp datatype. You can vie
 
 
 ```r
-base_limit_2021 <- paste0(base_URL, "$limit=500000","&$where=date between '2020-12-31T23:59:00.000' and '2021-12-31T23:59:00.000'", "&$select=date, primary_type, x_coordinate, y_coordinate")
+base_limit_2021 <- paste0(base_URL, "$limit=500000","&$where=date between '2020-12-31T23:59:00.000' and '2021-12-31T23:59:00.000'", "&$select=date, primary_type, latitude, longitude")
 base_limit_2021_encode <- URLencode(base_limit_2021)
 crime_2021 <- fromJSON(base_limit_2021_encode)
 ```
@@ -140,20 +140,21 @@ base_limit_count <- paste0(base_URL, "$limit=300000","&$where=date between '2020
 
 fromJSON(URLencode(base_limit_count))
 
-base_limit_2021 <- paste0(base_URL, "$limit=210000","&$where=date between '2020-12-31T23:59:00.000' and '2021-12-31T23:59:00.000'", "&$select=date, primary_type, x_coordinate, y_coordinate")
+base_limit_2021 <- paste0(base_URL, "$limit=210000","&$where=date between '2020-12-31T23:59:00.000' and '2021-12-31T23:59:00.000'", "&$select=date, primary_type, latitude, longitude")
 base_limit_2021_encode <- URLencode(base_limit_2021)
 crime_2021 <- fromJSON(base_limit_2021_encode)
 ```
 
 
-## Bonus opportunity (10 points)
+## Bonus opportunity (20 points)
 
-Can you use the API endpoint to get a subset of crimes data from the Chicago data portal, which only includes the data since 2021-01-01 to 2021-07-01 and the primary type is THEFT? Please only select these columns to be returned: date, primary_ type, x_coordinate and y_coordinate. Name the returned subset data as theft_2021.  Hint: you can use `&` inside the `paste0()` function to add additional filtering parameters. 
+Can you use the API endpoint to get a subset of crimes data from the Chicago data portal, which only includes the data since 2021-01-01 to 2021-07-01 and the primary type is THEFT? Please only select these columns to be returned: date, primary_ type,arrest, latitude,and  longitude. Name the returned subset data as theft_2021.  Hint: you can use `&` inside the `paste0()` function to add additional filtering parameters. 
 
 **Q1**: How many crimes occurred between 2021-01-01 to 2021-07-01 are theft? (5 points)
 
 **Q2**: After retrieving this subset via the API request, use the `head()` function to return the first 6 records of the theft_2021 dataset. A screenshot of the first 6 records is needed as delivery (5 points)
 
+**Q3**: Among all the theft records between 2021-01-01 to 2021-07-01, What percentage of crimes are solved (an arrest was made) by police? (10 points)
 
 
 
